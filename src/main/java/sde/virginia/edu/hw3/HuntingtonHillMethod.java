@@ -20,22 +20,23 @@ public class HuntingtonHillMethod implements ApportionmentMethod{
 
         while (allocated_reps > 0) {
             var max_priority = 0.0;
+            State max_priority_state = null;
+            var max_priority_reps = 0;
 
-            for (int i = 0; i < states.size(); i++) {
-                var current_state = states.get(i);
+            for (State current_state : states) {
                 var state_representatives = representation.getRepresentativesFor(current_state);
                 var state_population = current_state.population();
                 var state_priority = getPriority(state_population, state_representatives);
 
-                if (state_priority > max_priority){
+                if (state_priority > max_priority) {
                     max_priority = state_priority;
-                    representation.setRepresentativesFor(current_state, state_representatives + 1);
+                    max_priority_state = current_state;
+                    max_priority_reps = state_representatives;
                 }
             }
+            representation.setRepresentativesFor(max_priority_state, max_priority_reps + 1);
             allocated_reps--;
         }
-
-
 
         return representation;
     }
