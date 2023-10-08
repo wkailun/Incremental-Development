@@ -6,14 +6,14 @@ public class BenefitFormat implements RepresentationFormat{
     private DisplayOrder displayOrder;
 
     /**
-     * Creates a population format in ascending order
+     * Creates a benefit format in ascending order
      */
     public BenefitFormat() {
         this(DisplayOrder.DESCENDING);
     }
 
     /**
-     * Creates a population format in the specified order
+     * Creates a benefit format in the specified order
      * @param displayOrder a {@link DisplayOrder} enum to specify {@link DisplayOrder#ASCENDING ascending} or
      *                     {@link DisplayOrder#DESCENDING descending} order.
      */
@@ -58,9 +58,20 @@ public class BenefitFormat implements RepresentationFormat{
     }
 
     private static String getRepresentationStringForState(Representation representation, State state) {
-        double benefit = 0;
-        return String.format("%-16s|%5d|%8f\n",
-                state.name(), representation.getRepresentativesFor(state), benefit);
+        double benefit = representation.getAllocatedRepresentatives() - representation.getRepresentativesFor(state);
+        double benefit_rounded = Math.round(benefit * 1000.0)/1000.0;
+        String final_benefit = "";
+        if(benefit_rounded > 0){
+            final_benefit = "+" + benefit_rounded;
+        }
+        else if(benefit_rounded < 0){
+            final_benefit += benefit_rounded;
+        }
+        else{
+            final_benefit = "0.000";
+        }
+        return String.format("%-16s|%5d|%8s\n",
+                state.name(), representation.getRepresentativesFor(state), final_benefit);
     }
 
     private static Comparator<State> getPopulationComparator(DisplayOrder displayOrder) {
