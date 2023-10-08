@@ -21,7 +21,7 @@ List the primary contributions of each author. It is recommended to update this 
 
 ### Herin Seo
 
-* Created and wrote BenefitFormat class
+* Created and implemented BenefitFormat class
 
 ### [Author 3]
 
