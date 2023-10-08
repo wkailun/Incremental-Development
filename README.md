@@ -3,7 +3,7 @@
 
 ## Authors
 1) [Name], [computing ID], [github ID]
-2) [Name], [computing ID], [github ID]
+2) Herin Seo, aww5kx, herinseo
 3) [Name], [computing ID], [github ID]
 
 ## To Run
@@ -18,9 +18,9 @@ List the primary contributions of each author. It is recommended to update this 
 
 * 
 
-### [Author 2]
+### Herin Seo
 
-* 
+* Created and wrote BenefitFormat class
 
 ### [Author 3]
 
