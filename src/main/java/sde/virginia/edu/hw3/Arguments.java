@@ -76,13 +76,9 @@ public class Arguments {
      */
     public StateSupplier getStateSupplier() {
         var filename = arguments.get(0);
-        if (filename.toLowerCase().endsWith("csv")) {
-            return new CSVStateReader(filename);
-        }
-        if (filename.toLowerCase().endsWith("xlsx") || filename.toLowerCase().endsWith("xls")) {
-            return new SpreadsheetStateReader(filename);
-        }
-        throw new UnsupportedFileFormatException(filename);
+        StateSupplierFactory factory = new StateSupplierFactory();
+        StateSupplier supplier = factory.getStateSupplier(filename);
+        return supplier;
     }
 
     /**
@@ -119,10 +115,16 @@ public class Arguments {
      * @see Main#main(String[])
      */
     public ApportionmentMethod getApportionmentMethod() {
-        if (arguments.contains("--adams")) {
-            return new AdamsMethod();
+        ApportionmentMethodFactory factory = new ApportionmentMethodFactory();
+        if (arguments.contains("--method")){
+            int index = arguments.indexOf("--method");
+            if (index < arguments.size() - 1){
+                var method = arguments.get(index + 1);
+                ApportionmentMethod apportionment = factory.getDefaultMethod(method);
+                return apportionment;
+            }
         }
-        return new JeffersonMethod();
+        return factory.getDefaultMethod();
     }
 
     /**
@@ -140,13 +142,28 @@ public class Arguments {
      * @see Main#main(String[])
      */
     public RepresentationFormat getRepresentationFormat() {
-        if (arguments.contains("--population")) {
-            if (arguments.contains("-d") || arguments.contains("--descending")) {
-                return new PopulationFormat(DisplayOrder.DESCENDING);
+        var ascending = "--ascending";
+        var descending = "--descending";
+        RepresentationFormatFactory factory = new RepresentationFormatFactory();
+        if (arguments.contains("--format")) {
+            int index = arguments.indexOf("--format");
+            if (index < arguments.size() - 1){
+                var name = arguments.get(index + 1);
+                if (arguments.contains(ascending)) {
+                    RepresentationFormat representation = factory.getFormat(name, DisplayOrder.ASCENDING);
+                    return representation;
+                }
+                else if (arguments.contains(descending)) {
+                    RepresentationFormat representation = factory.getFormat(name, DisplayOrder.DESCENDING);
+                    return representation;
+                }
+                else {
+                    RepresentationFormat representation = factory.getFormat(name);
+                    return representation;
+                }
             }
-            return new PopulationFormat(DisplayOrder.ASCENDING);
         }
-        return new AlphabeticalFormat();
+        return factory.getDefaultFormat();
     }
 }
 
