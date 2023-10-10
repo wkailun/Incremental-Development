@@ -118,11 +118,9 @@ public class Arguments {
         ApportionmentMethodFactory factory = new ApportionmentMethodFactory();
         if (arguments.contains("--method")){
             int index = arguments.indexOf("--method");
-            if (index < arguments.size() - 1){
-                var method = arguments.get(index + 1);
-                ApportionmentMethod apportionment = factory.getDefaultMethod(method);
-                return apportionment;
-            }
+            var method = arguments.get(index + 1);
+            ApportionmentMethod apportionment = factory.getDefaultMethod(method);
+            return apportionment;
         }
         return factory.getDefaultMethod();
     }
@@ -147,20 +145,18 @@ public class Arguments {
         RepresentationFormatFactory factory = new RepresentationFormatFactory();
         if (arguments.contains("--format")) {
             int index = arguments.indexOf("--format");
-            if (index < arguments.size() - 1){
-                var name = arguments.get(index + 1);
-                if (arguments.contains(ascending)) {
-                    RepresentationFormat representation = factory.getFormat(name, DisplayOrder.ASCENDING);
-                    return representation;
-                }
-                else if (arguments.contains(descending)) {
-                    RepresentationFormat representation = factory.getFormat(name, DisplayOrder.DESCENDING);
-                    return representation;
-                }
-                else {
-                    RepresentationFormat representation = factory.getFormat(name);
-                    return representation;
-                }
+            var name = arguments.get(index + 1);
+            if (arguments.contains(ascending)) {
+                RepresentationFormat representation = factory.getFormat(name, DisplayOrder.ASCENDING);
+                return representation;
+            }
+            else if (arguments.contains(descending)) {
+                RepresentationFormat representation = factory.getFormat(name, DisplayOrder.DESCENDING);
+                return representation;
+            }
+            else {
+                RepresentationFormat representation = factory.getFormat(name);
+                return representation;
             }
         }
         return factory.getDefaultFormat();
