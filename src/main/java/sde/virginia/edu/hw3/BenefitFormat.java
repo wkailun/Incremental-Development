@@ -47,7 +47,7 @@ public class BenefitFormat implements RepresentationFormat{
     @Override
     public String getFormattedString(Representation representation) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("State           |Reps| Benefit\n");
+        stringBuilder.append("State           | Reps| Benefit\n");
         var states = new ArrayList<>(representation.getStates());
         states.sort(getPopulationComparator(displayOrder));
         for (State state : states) {
