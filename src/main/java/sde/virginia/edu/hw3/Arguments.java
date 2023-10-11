@@ -179,7 +179,16 @@ public class Arguments {
         }
         return factory.getDefaultFormat();
     }
-}
+    public void parse_Combined_Tokens() {
+        for (int i = 0; i < arguments.size(); i++) {
+            String arg = arguments.get(i);
+            if (arg.contains("-")){
+
+            }
+        }
+    }
+    }
+
 
 /*
  * Copyright (c) 2023. Paul "Will" McBurney <br>
