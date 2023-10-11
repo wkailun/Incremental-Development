@@ -58,7 +58,11 @@ public class BenefitFormat implements RepresentationFormat{
     }
 
     private static String getRepresentationStringForState(Representation representation, State state) {
-        double benefit = representation.getAllocatedRepresentatives() - representation.getRepresentativesFor(state);
+        double totalpop = 0;
+        totalpop += state.population();
+        double divisor = totalpop/representation.getAllocatedRepresentatives();
+        double quota = state.population()/divisor;
+        double benefit = representation.getRepresentativesFor(state)- quota;
         double benefit_rounded = ((int)(benefit * 1000.0))/1000.0;
         String final_benefit = "";
         if(benefit_rounded > 0){
