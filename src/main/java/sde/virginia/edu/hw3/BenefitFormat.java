@@ -47,7 +47,7 @@ public class BenefitFormat implements RepresentationFormat{
     @Override
     public String getFormattedString(Representation representation) {
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("State           |Reps| Benefit\n");
+        stringBuilder.append("State           | Reps| Benefit\n");
         var states = new ArrayList<>(representation.getStates());
         states.sort(getPopulationComparator(displayOrder));
         for (State state : states) {
@@ -59,7 +59,7 @@ public class BenefitFormat implements RepresentationFormat{
 
     private static String getRepresentationStringForState(Representation representation, State state) {
         double benefit = representation.getAllocatedRepresentatives() - representation.getRepresentativesFor(state);
-        double benefit_rounded = Math.round(benefit * 1000.0)/1000.0;
+        double benefit_rounded = ((int)(benefit * 1000.0))/1000.0;
         String final_benefit = "";
         if(benefit_rounded > 0){
             final_benefit = "+" + benefit_rounded;
