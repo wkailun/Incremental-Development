@@ -4,7 +4,7 @@
 ## Authors
 1) Rex Wang, xfg7ab, RexW999
 2) Herin Seo, aww5kx, herinseo
-3) [Name], [computing ID], [github ID]
+3) Karen Wang, vxd4qa, wkailun
 
 ## To Run
 
@@ -23,9 +23,10 @@ List the primary contributions of each author. It is recommended to update this 
 
 * Created and implemented BenefitFormat class
 
-### [Author 3]
+### Karen Wang
 
-* 
+* Modified the Argument class to offload work to factories 
+* Implemented and supported long and short argument names 
 
 ## Issues
 
