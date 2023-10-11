@@ -6,7 +6,7 @@ public class RepresentationFormatFactory {
     }
 
     public RepresentationFormat getFormat(String name){
-        switch (name) {
+        switch (name.toLowerCase()) {
             case "alphabet" -> {
                 return new AlphabeticalFormat();
             }
@@ -20,13 +20,13 @@ public class RepresentationFormatFactory {
         throw new IllegalArgumentException("Please choose one of three valid formats (alphabet, benefit, population");
     }
     public RepresentationFormat getFormat(String name, DisplayOrder order){
-        if (name.equals("alphabet")){
+        if (name.equalsIgnoreCase("alphabet")){
             return new AlphabeticalFormat();
         }
-        if (name.equals("benefit")){
+        if (name.equalsIgnoreCase("benefit")){
             return new BenefitFormat(order);
         }
-        if (name.equals("population")){
+        if (name.equalsIgnoreCase("population")){
             return new PopulationFormat(order);
         }
         throw new IllegalArgumentException("Please choose one of three valid formats (alphabet, benefit, population");

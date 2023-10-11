@@ -5,7 +5,7 @@ public class ApportionmentMethodFactory {
         return new HuntingtonHillMethod();
     }
     public ApportionmentMethod getDefaultMethod(String method){
-        switch (method) {
+        switch (method.toLowerCase()) {
             case "adams" -> {
                 return new AdamsMethod();
             }
