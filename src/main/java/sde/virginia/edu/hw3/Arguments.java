@@ -6,6 +6,7 @@ package sde.virginia.edu.hw3;
 
 import java.util.Arrays;
 import java.util.List;
+import org.apache.commons.cli.*;
 
 
 /**
@@ -178,14 +179,6 @@ public class Arguments {
             }
         }
         return factory.getDefaultFormat();
-    }
-    public void parse_Combined_Tokens() {
-        for (int i = 0; i < arguments.size(); i++) {
-            String arg = arguments.get(i);
-            if (arg.contains("-")){
-
-            }
-        }
     }
     }
 
