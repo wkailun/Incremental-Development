@@ -59,7 +59,9 @@ public class BenefitFormat implements RepresentationFormat{
 
     private static String getRepresentationStringForState(Representation representation, State state) {
         double totalpop = 0;
-        totalpop += state.population();
+        for(State s: representation.getStates()){
+            totalpop += s.population();
+        }
         double divisor = totalpop/representation.getAllocatedRepresentatives();
         double quota = state.population()/divisor;
         double benefit = representation.getRepresentativesFor(state)- quota;
