@@ -91,19 +91,25 @@ public class Arguments {
      * @see Main#main(String[])
      */
     public int getRepresentatives() {
-        if (arguments.size() == 1) {
-            return DEFAULT_REPRESENTATIVE_COUNT;
-        }
-
-        try {
-            var targetRepresentatives = Integer.parseInt(arguments.get(1));
-            if (targetRepresentatives <= 0) {
-                throw new IllegalArgumentException("Number of representatives argument must be a positive integer.");
+        if (arguments.contains("--representatives") || arguments.contains("-r")) {
+            int index = 0;
+            for (int i = 0; i < arguments.size(); i++) {
+                if (arguments.get(i).equals("--representatives") || arguments.get(i).equals("-r")) {
+                    index = i;
+                    break;
+                }
             }
-            return targetRepresentatives;
-        } catch (NumberFormatException e) {
-            return DEFAULT_REPRESENTATIVE_COUNT;
+            try {
+                var targetRepresentatives = Integer.parseInt(arguments.get(index + 1));
+                if (targetRepresentatives <= 0) {
+                    throw new IllegalArgumentException("Number of representatives argument must be a positive integer.");
+                }
+                return targetRepresentatives;
+            } catch (NumberFormatException e) {
+                return DEFAULT_REPRESENTATIVE_COUNT;
+            }
         }
+        return DEFAULT_REPRESENTATIVE_COUNT;
     }
 
     /**
@@ -116,8 +122,14 @@ public class Arguments {
      */
     public ApportionmentMethod getApportionmentMethod() {
         ApportionmentMethodFactory factory = new ApportionmentMethodFactory();
-        if (arguments.contains("--method")){
-            int index = arguments.indexOf("--method");
+        if (arguments.contains("--method") || arguments.contains("-m")){
+            int index = 0;
+            for (int i = 0; i < arguments.size(); i++) {
+                if (arguments.get(i).equals("--method") || arguments.get(i).equals("-m")) {
+                    index = i;
+                    break;
+                }
+            }
             var method = arguments.get(index + 1);
             ApportionmentMethod apportionment = factory.getDefaultMethod(method);
             return apportionment;
@@ -143,14 +155,20 @@ public class Arguments {
         var ascending = "--ascending";
         var descending = "--descending";
         RepresentationFormatFactory factory = new RepresentationFormatFactory();
-        if (arguments.contains("--format")) {
-            int index = arguments.indexOf("--format");
+        if (arguments.contains("--format") || arguments.contains("-f")) {
+            int index = 0;
+            for (int i = 0; i < arguments.size(); i++) {
+                if (arguments.get(i).equals("--format") || arguments.get(i).equals("-f")) {
+                    index = i;
+                    break;
+                }
+            }
             var name = arguments.get(index + 1);
-            if (arguments.contains(ascending)) {
+            if (arguments.contains(ascending) || arguments.contains("-a")) {
                 RepresentationFormat representation = factory.getFormat(name, DisplayOrder.ASCENDING);
                 return representation;
             }
-            else if (arguments.contains(descending)) {
+            else if (arguments.contains(descending) || arguments.contains("-d")) {
                 RepresentationFormat representation = factory.getFormat(name, DisplayOrder.DESCENDING);
                 return representation;
             }
