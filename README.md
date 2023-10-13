@@ -9,12 +9,17 @@
 ## To Run
 
 [Add a brief description of how to build and run your .jar file based on this code]
-
+Run ./gradlew build in the terminal to create the .jar file.
+Once the .jar is created, cd build/libs, then run, java -jar Apporntionment.jar (.csv or .xlsx) (The rest/look under)
+For the rest you could use long arguments with (--representation (number) / --method (huntington,jefferson,adam) / --format (alphabetical,benefit,population)) / --ascending / --descending
+You could also leave those blank for default options
+Short flags can also be used as following: -r / -m / -f / -a / -d
+when using short flags you can also combine such as -rfma (arguments) for easier use
 ## Contributions
 
 List the primary contributions of each author. It is recommended to update this with your contributions after each coding session.:
 
-### [Author 1]
+### Rex Wang
 
 * Implemented HuntingtonHill
 * Made the 3 factory classes
