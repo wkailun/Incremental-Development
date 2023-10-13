@@ -82,7 +82,7 @@ public class BenefitFormat implements RepresentationFormat{
 
     private static Comparator<State> getPopulationComparator(DisplayOrder displayOrder) {
         var comparator = Comparator.comparing(State::population);
-        if (displayOrder == DisplayOrder.ASCENDING) {
+        if (displayOrder == DisplayOrder.DESCENDING) {
             return comparator.reversed();
         }
         return comparator;
