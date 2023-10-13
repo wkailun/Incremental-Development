@@ -9,7 +9,7 @@
 ## To Run
 
 Run ./gradlew build in the terminal to create the .jar file.
-Once the .jar is created, cd build/libs, then run, java -jar Apporntionment.jar (.csv or .xlsx) (The rest/look under)
+Once the .jar is created, cd build/libs, then run, java -jar Apportionment.jar (.csv or .xlsx) (The rest/look under)
 For the rest you could use long arguments with (--representation (number) / --method (huntington,jefferson,adam) / --format (alphabetical,benefit,population)) / --ascending / --descending
 You could also leave those blank for default options
 Short flags can also be used as following: -r / -m / -f / -a / -d
