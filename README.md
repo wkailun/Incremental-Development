@@ -32,6 +32,7 @@ List the primary contributions of each author. It is recommended to update this 
 
 * Modified the Argument class to offload work to factories 
 * Implemented and supported long and short argument names 
+* Handled combined Arguments
 
 ## Issues
 
