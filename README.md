@@ -22,6 +22,7 @@ List the primary contributions of each author. It is recommended to update this 
 ### Herin Seo
 
 * Created and implemented BenefitFormat class
+* Answered part of question 1
 
 ### Karen Wang
 
