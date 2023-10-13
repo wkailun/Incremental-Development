@@ -8,7 +8,6 @@
 
 ## To Run
 
-[Add a brief description of how to build and run your .jar file based on this code]
 Run ./gradlew build in the terminal to create the .jar file.
 Once the .jar is created, cd build/libs, then run, java -jar Apporntionment.jar (.csv or .xlsx) (The rest/look under)
 For the rest you could use long arguments with (--representation (number) / --method (huntington,jefferson,adam) / --format (alphabetical,benefit,population)) / --ascending / --descending
