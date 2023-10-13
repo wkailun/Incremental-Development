@@ -37,7 +37,7 @@ public class BenefitFormat implements RepresentationFormat{
     }
 
     /**
-     * Generates table-like {@link String} of a {@link Representation} where states are sorted in order by population
+     * Generates table-like {@link String} of a {@link Representation} where states are sorted in order by benefit
      * in the order specified at construction.
      *
      * @param representation an apportionment of representatives to the states
@@ -49,15 +49,15 @@ public class BenefitFormat implements RepresentationFormat{
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("State           | Reps| Benefit\n");
         var states = new ArrayList<>(representation.getStates());
-        states.sort(getPopulationComparator(displayOrder));
+        states.sort(getBenefitComparator(displayOrder, representation));
         for (State state : states) {
-            var stateString = getRepresentationStringForState(representation, state);
+            var stateString = getBenefitStringForState(representation, state);
             stringBuilder.append(stateString);
         }
         return stringBuilder.toString();
     }
 
-    private static String getRepresentationStringForState(Representation representation, State state) {
+    private static double getBenefit(Representation representation, State state){
         double totalpop = 0;
         for(State s: representation.getStates()){
             totalpop += s.population();
@@ -65,13 +65,17 @@ public class BenefitFormat implements RepresentationFormat{
         double divisor = totalpop/representation.getAllocatedRepresentatives();
         double quota = state.population()/divisor;
         double benefit = representation.getRepresentativesFor(state)- quota;
-        double benefit_rounded = Math.round(benefit * 1000.0)/1000.0;
+        return Math.round(benefit * 1000.0)/1000.0;
+    }
+
+    private static String getBenefitStringForState(Representation representation, State state) {
+        double benefit = getBenefit(representation, state);
         String final_benefit = "";
-        if(benefit_rounded > 0){
-            final_benefit = "+" + benefit_rounded;
+        if(benefit > 0){
+            final_benefit = "+" + benefit;
         }
-        else if(benefit_rounded < 0){
-            final_benefit += benefit_rounded;
+        else if(benefit < 0){
+            final_benefit += benefit;
         }
         else{
             final_benefit = "0.000";
@@ -80,11 +84,18 @@ public class BenefitFormat implements RepresentationFormat{
                 state.name(), representation.getRepresentativesFor(state), final_benefit);
     }
 
-    private static Comparator<State> getPopulationComparator(DisplayOrder displayOrder) {
-        var comparator = Comparator.comparing(State::population);
-        if (displayOrder == DisplayOrder.DESCENDING) {
-            return comparator.reversed();
-        }
+    private static Comparator<State> getBenefitComparator(DisplayOrder displayOrder, Representation representation) {
+        Comparator<State> comparator = (state1, state2) -> {
+            double benefit1 = getBenefit(representation, state1);
+            double benefit2 = getBenefit(representation, state2);
+
+            if (displayOrder == DisplayOrder.ASCENDING) {
+                return Double.compare(benefit1, benefit2);
+            }
+            else {
+                return Double.compare(benefit2, benefit1);
+            }
+        };
         return comparator;
     }
 }
