@@ -20,3 +20,7 @@ familiarity with our own code made us lean towards the implementation in HW 1.
 What is the benefit of the Factory classes that handle instantiating the relevant objects? How this could make future changes easier? Be specific about what could you could expect to change.
 
 ## Answer 2
+Factory classes allowed for flexibility in changing and modifying code. Since there is a subclass to handle the instantiation of relevant objects, it allows for focus to be one the main, overall responsibilities of the code.
+The overall code is more readable and less complex, which allows for future modifications of the code to be more manageable. For instance, in the Argument class, similar to the addition for handling combined arguments, 
+further modifications may be required to be made to the Argument class for accepting additional designs of command-line arguments. The switching between the different flags, like the types of method and type of format, 
+may be done in the factory classes, which in future modifications, it is one less thing to worry about. Additionally, factory classes make the overall code less clustered. 
