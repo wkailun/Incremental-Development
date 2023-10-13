@@ -88,7 +88,6 @@ public class BenefitFormat implements RepresentationFormat{
         Comparator<State> comparator = (state1, state2) -> {
             double benefit1 = getBenefit(representation, state1);
             double benefit2 = getBenefit(representation, state2);
-
             if (displayOrder == DisplayOrder.ASCENDING) {
                 return Double.compare(benefit1, benefit2);
             }
