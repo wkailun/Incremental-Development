@@ -6,7 +6,12 @@ package sde.virginia.edu.hw3;
 
 import java.util.Arrays;
 import java.util.List;
-import org.apache.commons.cli.*;
+import java.util.ArrayList;
+//import org.apache.commons.cli.*;
+//import picocli.*;
+//import picocli.CommandLine;
+//import picocli.CommandLine.Command;
+//import picocli.CommandLine.Option;
 
 
 /**
@@ -43,6 +48,7 @@ import org.apache.commons.cli.*;
  *
  * @author Will-McBurney
  */
+
 public class Arguments {
     /**
      * The number of representatives in the US House of Representatives since 1913
@@ -62,6 +68,22 @@ public class Arguments {
                        java -jar Apportionment.jar <filename.csv> [number of representatives to allocate]""");
         }
         arguments = Arrays.asList(args);
+    }
+    public ArrayList<String> singleToken() {
+        ArrayList<String> combinedArguments = new ArrayList<>();
+        for (int i = 0; i < arguments.size(); i++) {
+            String argument = arguments.get(i);
+            if (argument.startsWith("-")) {
+                String flags = argument.substring(1);
+                for (int j = 0; j < flags.length(); j++) {
+                    combinedArguments.add(String.valueOf(flags.charAt(j)));
+                }
+            }
+            else {
+                combinedArguments.add(argument);
+            }
+        }
+        return combinedArguments;
     }
 
     /**
@@ -88,10 +110,10 @@ public class Arguments {
      * @return the number of representatives to allocate, based on the command-line arguments. If
      * <code>[representatives]</code> is not specified, then {@link Arguments#DEFAULT_REPRESENTATIVE_COUNT return the
      * default number of representatives}.
-     *
      * @see Main#main(String[])
      */
     public int getRepresentatives() {
+        ArrayList<String> combinedArguments = new ArrayList<>(singleToken());
         if (arguments.contains("--representatives") || arguments.contains("-r")) {
             int index = 0;
             for (int i = 0; i < arguments.size(); i++) {
@@ -106,8 +128,28 @@ public class Arguments {
                     throw new IllegalArgumentException("Number of representatives argument must be a positive integer.");
                 }
                 return targetRepresentatives;
-            } catch (NumberFormatException e) {
+            }
+            catch (NumberFormatException e) {
                 return DEFAULT_REPRESENTATIVE_COUNT;
+            }
+        }
+        else if (combinedArguments.contains("r")) {
+            for (int i = 0; i < combinedArguments.size(); i++) {
+                if (combinedArguments.get(i).equalsIgnoreCase("r")) {
+                    for (int j = i + 1; j < combinedArguments.size(); j++) {
+                        String target = combinedArguments.get(j);
+                        if (target.matches("\\d+")) {
+                            int parsedValue = Integer.parseInt(target);
+                            if (parsedValue > 0) {
+                                var targetRepresentatives = parsedValue;
+                                return targetRepresentatives;
+                            }
+                            else {
+                                throw new IllegalArgumentException("Number of representatives argument must be a positive integer.");
+                            }
+                        }
+                    }
+                }
             }
         }
         return DEFAULT_REPRESENTATIVE_COUNT;
@@ -123,7 +165,8 @@ public class Arguments {
      */
     public ApportionmentMethod getApportionmentMethod() {
         ApportionmentMethodFactory factory = new ApportionmentMethodFactory();
-        if (arguments.contains("--method") || arguments.contains("-m")){
+        ArrayList<String> combinedArguments = new ArrayList<>(singleToken());
+        if (arguments.contains("--method") || arguments.contains("-m")) {
             int index = 0;
             for (int i = 0; i < arguments.size(); i++) {
                 if (arguments.get(i).equals("--method") || arguments.get(i).equals("-m")) {
@@ -131,9 +174,24 @@ public class Arguments {
                     break;
                 }
             }
-            var method = arguments.get(index + 1);
-            ApportionmentMethod apportionment = factory.getDefaultMethod(method);
-            return apportionment;
+            if (index + 1 < arguments.size()) {
+                var method = arguments.get(index + 1);
+                ApportionmentMethod apportionment = factory.getDefaultMethod(method);
+                return apportionment;
+            }
+        }
+        else if (combinedArguments.contains("m")) {
+            for (int i = 0; i < combinedArguments.size(); i++) {
+                if (combinedArguments.get(i).equals("m")) {
+                    for (int j = i + 1; j < combinedArguments.size(); j++) {
+                        String method = combinedArguments.get(j);
+                        if (method.equalsIgnoreCase("jefferson") || method.equalsIgnoreCase("adams") || method.equalsIgnoreCase("huntington")) {
+                            ApportionmentMethod apportionment = factory.getDefaultMethod(method);
+                            return apportionment;
+                        }
+                    }
+                }
+            }
         }
         return factory.getDefaultMethod();
     }
@@ -156,6 +214,7 @@ public class Arguments {
         var ascending = "--ascending";
         var descending = "--descending";
         RepresentationFormatFactory factory = new RepresentationFormatFactory();
+        ArrayList<String> combinedArguments = new ArrayList<>(singleToken());
         if (arguments.contains("--format") || arguments.contains("-f")) {
             int index = 0;
             for (int i = 0; i < arguments.size(); i++) {
@@ -178,9 +237,32 @@ public class Arguments {
                 return representation;
             }
         }
+        else if (combinedArguments.contains("f")) {
+            for (int i = 0; i < combinedArguments.size(); i++) {
+                if (combinedArguments.get(i).equals("f")) {
+                    for (int j = i + 1; j < combinedArguments.size(); j++) {
+                        String name = combinedArguments.get(j);
+                        if (name.equalsIgnoreCase("benefit") ||  name.equalsIgnoreCase("population")) {
+                            if (combinedArguments.contains("a") || combinedArguments.contains(ascending) || combinedArguments.contains("-a")) {
+                                RepresentationFormat representation = factory.getFormat(name, DisplayOrder.ASCENDING);
+                                return representation;
+                            }
+                            else if (combinedArguments.contains("d") || combinedArguments.contains(descending) || combinedArguments.contains("-d")) {
+                                RepresentationFormat representation = factory.getFormat(name, DisplayOrder.DESCENDING);
+                                return representation;
+                            }
+                            else {
+                                RepresentationFormat representation = factory.getFormat(name);
+                                return representation;
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return factory.getDefaultFormat();
     }
-    }
+}
 
 
 /*
